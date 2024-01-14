@@ -1,0 +1,33 @@
+
+
+@keyframes ldio {
+  0% { background: #E2D1F9 }
+  12.5% { background: #E2D1F9 }
+  12.625% { background: #317773 }
+  100% { background: #317773 }
+}
+
+.ldio div {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: #E2D1F9;
+  animation: ldio 1s linear infinite;
+}
+.spinner {
+  width: 110px;
+  height: 110px;
+  display: inline-block;
+  overflow: hidden;
+  background: none;
+}
+.ldio {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateZ(0) scale(1);
+  backface-visibility: hidden;
+  transform-origin: 0 0;
+}
+.ldio div { box-sizing: content-box; }
+
