@@ -10,14 +10,14 @@ export default async function handler(req , res){
         console.log(err)
         res.status(500).json({status : 'faild' , message : 'problem in connecting to DB'})
     }
-    let {email , password} = req.body;
+    let {email , password , name} = req.body;
 
     let existUser = await UserTodo.findOne({email : email})
     if(existUser) return res.status(424).json({status : 'faild' , message : "user does exist"})
 
     password = await Hash(password)
     
-    let user = await UserTodo.create({email , password})
+    let user = await UserTodo.create({email , password , name})
     
     res.status(200).json({status : 'success' , data : user})
 }

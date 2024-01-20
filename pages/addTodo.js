@@ -1,15 +1,15 @@
-import SignUpPage from "@/component/template/signUpPage";
+import AddTodoPage from "@/component/template/addTodoPage";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 
-export default function SignUp(){
-    return <SignUpPage />
+export default function AddTodo(){
+    return <AddTodoPage />
 }
 
 export async function getServerSideProps({req , res}) {
 
     const session = await getServerSession(req, res, authOptions)
-    if(session){
+    if(!session){
         return {
             redirect : {
                 destination: '/',

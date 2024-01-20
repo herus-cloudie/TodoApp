@@ -11,7 +11,7 @@ let UserSchema = new Schema({
      name: String,
      lastName : String,
      todo : {
-        type : [{title : String , status : String}]
+        type : [{title : String , status : String , confirmDescription : [{text : String , id : Number , status : String}]}]
      },
      createdAt : {
         type : Date,

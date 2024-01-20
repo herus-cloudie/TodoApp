@@ -1,13 +1,13 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 
 import {signIn} from 'next-auth/react'
+
 import Loading from "../module/customLoading/loading";
-import { useRouter } from "next/router";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+
 
 export default function SignUpPage(){
     let [err , setErr] = useState('')
@@ -37,7 +37,7 @@ export default function SignUpPage(){
         if(!signUpState.email || !signUpState.password || !signUpState.name || !signUpState.reapetedPassword) return setErr('please fill all input')
         else if(signUpState.password.length < 6) return setErr('your password should be more than 6 character')
         else if(signUpState.password !== signUpState.reapetedPassword) return setErr('your passwords is not match!')
-        else if(!signUpState.email.includes('@') || signUpState.email.length < 6) return setErr('your email is not valid')
+        else if(!signUpState.email.includes('@') || signUpState.email.length < 12) return setErr('your email is not valid')
         else{
             setErr('')
             setLoading(true)
@@ -49,6 +49,12 @@ export default function SignUpPage(){
             let Data = await progress.json()
             setLoading(false)
             if(Data.status == 'faild') setErr(Data.message)
+            else{
+                setSignStatus(false)
+                setSignInState({email : '', password : ''})
+                setSignUpState({name : '', email : '', password : '', reapetedPassword : '',})
+                setErr('')
+            }
             console.log(Data)
         }
     }
@@ -72,8 +78,8 @@ export default function SignUpPage(){
                     <div className="form">
                         <h1 className="h1form">Create Account</h1>
                         <div className="social-container">
-                            <a href="#" className="a-form social"><i className="fab fa-facebook-f"><FcGoogle/></i></a>
-                            <a href="#" className="a-form social"><i className="fab fa-google-plus-g"><BsGithub /></i></a>
+                            <a onClick={() => signIn('google' , {redirect : false})}href="#" className="a-form social"><i className="fab fa-facebook-f"><FcGoogle/></i></a>
+                            <a onClick={() => signIn('github' , {redirect : false})} href="#" className="a-form social"><i className="fab fa-google-plus-g"><BsGithub /></i></a>
                         </div>
                         <span>or use your email for registration</span>
                         <input className="input-form" name="name" onChange={changeSignUpHandler} type="text" placeholder="Name" />
@@ -93,12 +99,12 @@ export default function SignUpPage(){
                     <div className="form">
                         <h1 className="h1form">Sign in</h1>
                         <div className="social-container">
-                            <a href="#" className="a-form social"><i className="fab fa-facebook-f"><FcGoogle/></i></a>
-                            <a href="#" className="a-form social"><i className="fab fa-google-plus-g"><BsGithub /></i></a>
+                            <a onClick={() => signIn('google' , {redirect : false})}href="#" className="a-form social"><i className="fab fa-facebook-f"><FcGoogle/></i></a>
+                            <a onClick={() => signIn('github' , {redirect : false})} href="#" className="a-form social"><i className="fab fa-google-plus-g"><BsGithub /></i></a>
                         </div>
                         <span>or use your account</span>
-                        <input className="input-form" name="email" onChange={changeSignInHandler} type="email" placeholder="Email" />
-                        <input className="input-form" name="password" onChange={changeSignInHandler} type="password" placeholder="Password"/>
+                        <input value={signInState.email} className="input-form" name="email" onChange={changeSignInHandler} type="email" placeholder="Email" />
+                        <input value={signInState.password} className="input-form" name="password" onChange={changeSignInHandler} type="password" placeholder="Password"/>
                         {
                             loading ? <Loading /> : null
                         }
